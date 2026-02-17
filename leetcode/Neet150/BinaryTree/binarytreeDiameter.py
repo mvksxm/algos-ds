@@ -1,30 +1,35 @@
 from TreeNode import TreeNode
 
+# Time Complexity: O(n)
+# Space Complexity: O(n) (len of recursive call stack)
+
+
+# Approach:
+# Create a recursive nested function inside a main function. Maintain a global var - global_max that would contain
+# the max sum of the amount of left edges and right edges of a particular node. On each recursive call calculate the
+# amount of ledges from the left side and from the right side of a node, sum them and update the global_max if it is smaller.
+# Recursive function itself on each call should return the max between amount of edges encountered from the left and
+# from the right, in order to get the max amount at a specific level of a tree.
+
 class Solution:
     def diameterOfBinaryTree(self, root: TreeNode) -> int:
 
-        global global_diameter
-        global_diameter = 0
+        global_max = 0
 
-        def recursive_function(node: TreeNode):
+        def count_diameter(node: TreeNode):
 
-            global global_diameter
-
-            if not node:
+            if node is None:
                 return 0
 
-            if node.left is None and node.right is None:
-                return 1
+            left_diameter = count_diameter(node.left)
+            right_diameter = count_diameter(node.right)
 
-            left_child_count = recursive_function(node.left)
-            right_child_count = recursive_function(node.right)
-            global_diameter = max(global_diameter, left_child_count + right_child_count)
+            nonlocal global_max
+            global_max = max(global_max, left_diameter + right_diameter)
 
-            return max(left_child_count, right_child_count) + 1
+            return max(left_diameter + 1, right_diameter + 1)
 
-        init_node = root
+        node = root
+        count_diameter(node)
 
-        root_max_path = recursive_function(init_node) - 1
-        return max(global_diameter, root_max_path)
-
-
+        return global_max
