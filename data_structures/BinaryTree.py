@@ -9,6 +9,9 @@ class BinaryTree:
         self._arr = arr
         self._root_node = self._generate_binary_tree()
 
+    def root(self) -> TreeNode:
+        return self._root_node
+
     def _generate_binary_tree(self) -> Optional[TreeNode]:
         root = self._recursive_balanced_tree_generator(0)
         return root
