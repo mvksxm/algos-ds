@@ -1,54 +1,34 @@
+from typing import List
+
+# Time Complexity:  n^(t/m), m ->  the smallest number in the array
+# Space Complexity: O(t/m), where m is the smallest number in the array nums.
+
 class Solution:
-    def combinationSumMySolution(nums: list, target: int) -> list:
+    def combinationSum(self, nums: List[int], target: int) -> List[List[int]]:
 
         res = []
-        subset = []
 
-        def dfs(num_index, target_val):
+        def dfs(
+                nums_added: list,
+                nums_left: list,
+                sm: int,
+                res: list
+        ):
 
-            nums_elem = nums[num_index]
-            subset.append(nums_elem)
-            target_val -= nums_elem
-
-            if target_val == 0:
-                res.append(subset.copy())
+            if sm > target:
                 return
 
-            if target_val < 0:
+            if sm == target:
+                res.append(nums_added)
                 return
 
-            elements_consider = [j for j in range(num_index, len(nums)) if target_val >= nums[j]]
-            # if not elements_consider:
-            #     subset.pop()
-            #
+            for i in range(len(nums_left)):
+                dfs(nums_added + [nums_left[i]], nums_left[i:], sm + nums_left[i], res)
 
-            for elem_ind in elements_consider:
-                dfs(elem_ind, target_val)
-                subset.pop()
-
-
-        for i in range(len(nums)):
-            subset = []
-            dfs(i, target)
-
+        dfs([], nums, 0, res)
         return res
 
 if __name__ == "__main__":
-    nums = [3,4,5]
-    t = 16
-    print(Solution.combinationSumMySolution(nums, t))
-
-
-    # [2, 5, 6, 9 ]; t = 9
-        # result = [2, 2, 5]
-        #
-# 2 2
-#[2,4,5,8] t = 8
-#            2
-#          /   \       \  \
-#         2      4      5  8
-#        / |     / \
-#       2  4     2  4
-#      /        /
-#     2         2
-#
+    sln = Solution()
+    print(sln.combinationSum([2,5,6,9], 9))
+# [2, 5, 6, 9 ]; t = 9

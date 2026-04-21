@@ -1,69 +1,22 @@
 class Solution:
     def subsets(self, nums: list) -> list:
-        # [3,2,4,1]
-        subsets = [[]] #[[], [1],[1, 2], [1, 2, 3],[1, 3], [2], [2,3], [3] ]
 
-        def dfs(i, curr_sublist):
-            if i >= len(nums):
-                return
-
-            modified_sublist = curr_sublist + nums[i] #[3]
-            subsets.append(modified_sublist) # []
-            dfs(i+1, modified_sublist)
-            dfs(i+2, modified_sublist)
-
-
-        for i in range(len(nums)):
-            dfs(i, [])
-
-        return subsets
-
-    def subsetsCorrect(nums:list) -> list:
         res = []
 
-        subset = []
-        def dfs(i):
-            if i >= len(nums):
-                res.append(subset.copy())
+        def dfs(num_arr: list, nums_to_iterate: list, res: list):
+            if not nums_to_iterate:
+                res.append(num_arr)
                 return
-            subset.append(nums[i])
-            dfs(i+1)
-            subset.pop()
-            dfs(i+1)
+            left_to_check = nums_to_iterate[1:] if len(nums_to_iterate) > 1 else []
+            dfs(num_arr, left_to_check, res) # [1], [3]; [1]
+            dfs(num_arr + [nums_to_iterate[0]], left_to_check, res) # [1, 2], [3]; [1,3]
 
-        dfs(0)
+
+        dfs([], nums, res)
         return res
 
 
-
 if __name__ == "__main__":
-    nums=[3,2,4,1]
-    print(Solution.subsetsCorrect(nums))
-
-# 3 2 4 1
-#                  []
-#          /               \
-#         []              [3]
-#       /     \              \
-#    []      [2]             [3,2]
-#    / \     / \             /  \
-#   []  [1] [2] [2,1]      [3,2][3,2,4]
-#                          /     /   \
-#                          [3,2,4] [3,2,4,1]
-
-#       dfs(0, [])
-#     1         2
-#    /  \       |
-#    2  3       3
-#   /
-#   3
-#
-#
-
-#     3
-#   /
-#
-#
-#
-
-
+    nums = [3,2,4,1]
+    sln = Solution()
+    print(sln.subsets(nums))

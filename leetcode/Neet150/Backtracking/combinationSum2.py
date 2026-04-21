@@ -1,55 +1,52 @@
+# Time Complexity: O(n*log n) + n^(t/n)*k
+# Space Complexity: O(t/n) + O(n^(t/n))
+
+
 class Solution:
-    def combinationSum2(candidates: list, target: int) -> list:
+    def combinationSum2(self, candidates: list, target: int) -> list:
+
         res = []
         candidates.sort()
 
-        subset = []
-        def dfs(idx, curr_sum):
+        def dfs(
+                nums_added: list,
+                next_idx: int,
+                sm: int,
+                res: list,
+        ) -> bool:
 
-            if curr_sum == target:
-                res.append(subset.copy())
-                return
 
-            if idx >= len(candidates) or curr_sum > target:
-                return
+            if sm == target:
+                res.append(nums_added.copy())
+                return True
 
-            subset.append(candidates[idx])
-            dfs(idx+1, curr_sum + candidates[idx])
-            subset.pop()
+            if next_idx > len(candidates) - 1 or sm > target:
+                return False
 
-            while idx <= len(candidates) - 2 and candidates[idx] == candidates[idx+1]:
-                idx += 1
+            seen = set()
+            for i in range(next_idx, len(candidates)):
 
-            dfs(idx+1, curr_sum)
+                if candidates[i] in seen:
+                    continue
+                else:
+                    seen.add(candidates[i])
 
-        dfs(0, 0)
+                nums_added.append(candidates[i])
+                # next_idx += 1
 
+                is_fine = dfs(nums_added, i + 1, sm + candidates[i], res)
+                nums_added.pop()
+
+                if not is_fine:
+                    break
+
+            return True
+
+        dfs([], 0, 0, res)
         return res
 
 
 if __name__ == "__main__":
-    print(Solution.combinationSum2([9,2,2,4,6,1,5], 8))
-
-
-#   [1,2,2,4,5,6,9]   t = 8
-
-#          1
-#        /
-#       3
-#      / \
-#     5   7
-#    / \
-#   9   10
-
-#        []
-#       /          \
-#      [1]           [ ]
-#      /  \
-#   [1,2,2]  [1]
-#    /
-#  [1,2,2,4]
-#
-#
-#
-
+    sln = Solution()
+    print(sln.combinationSum2([1,2,3,4,5], 7))
 
