@@ -1,8 +1,5 @@
 from typing import Callable
-
-from datasets import interleave_datasets
-
-from tester.models import ListNode
+from .models import ListNode
 
 
 class Tester:

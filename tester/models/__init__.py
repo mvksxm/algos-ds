@@ -1,1 +1,1 @@
-from ListNode import ListNode
+from .ListNode import ListNode
