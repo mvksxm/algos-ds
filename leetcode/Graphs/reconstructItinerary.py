@@ -45,6 +45,28 @@ class Solution:
         dfs("JFK")
         return res[::-1]
 
+    def findItineraryElegant(self, tickets: List[List[str]]) -> List[str]:
+
+        # Adjacency list
+        res = []
+        sorted_tickets = sorted(tickets, reverse = True, key = lambda x: x[1])
+        graph = defaultdict(list)
+        for ticket in sorted_tickets:
+            graph[ticket[0]].append(ticket[1])
+
+        def dfs(airport: str):
+            child_nodes = graph[airport]
+
+            while child_nodes:
+                c_node = child_nodes.pop()
+                dfs(c_node)
+
+            if not child_nodes: res.append(airport)
+
+
+        dfs("JFK")
+        return res[::-1]
+
 if __name__ == "__main__":
 
     sln = Solution()

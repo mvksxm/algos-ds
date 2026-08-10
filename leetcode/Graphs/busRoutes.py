@@ -33,3 +33,42 @@ class Solution:
                             q.append((stop, bus_count + 1))
 
         return -1
+
+    def numBusesToDestinationElegant(self, routes: List[List[int]], source: int, target: int) -> int:
+
+        if source == target: return 0
+
+        bus_graph = collections.defaultdict(list)
+        bus_queue = deque()
+        visited_bus_set = set()
+        visited_station_set = set()
+
+        for i in range(len(routes)):
+            for st in routes[i]:
+                bus_graph[st].append(i)
+                if st == source:
+                    bus_queue.append((i, 1))
+                    visited_bus_set.add(i)
+
+        while bus_queue:
+            bus_id, path_len = bus_queue.popleft()
+            bus_stations = routes[bus_id]
+
+            for b_s in bus_stations:
+
+                if b_s in visited_station_set: continue
+
+                if b_s == target: return path_len
+                station_buses = bus_graph[b_s]
+
+
+                for bus in station_buses:
+                    if bus not in visited_bus_set:
+                        bus_queue.append((bus, path_len+1))
+                        visited_bus_set.add(bus)
+
+                visited_station_set.add(b_s)
+
+
+
+        return -1
