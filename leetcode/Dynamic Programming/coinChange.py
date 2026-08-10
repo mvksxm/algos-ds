@@ -61,7 +61,6 @@ class Solution:
                 if coin <= amnt:
                     dp[amnt] = min(dp[amnt], dp[amnt - coin] + 1)
 
-
         return dp[-1] if dp[-1] != 10**4 + 1 else -1
 
 
