@@ -39,6 +39,39 @@ class Solution:
 
         return res
 
+    def addOperatorsElegant(self, num: str, target: int) -> List[str]:
+        res = []
+
+        def dfs(idx, sm, prev_num, pattern):
+
+            if idx >= len(num) and sm == target:
+                res.append(pattern)
+                return
+
+            if idx >= len(num):
+                return
+
+            for i in range(idx, len(num)):
+
+                curr_num = int(num[idx:i+1])
+
+                if idx == 0:
+                    dfs(i+1, sm + curr_num, curr_num, str(curr_num))
+                else:
+                    # Sum
+                    dfs(i+1, sm + curr_num, curr_num, pattern + "+" + str(curr_num))
+
+                    # Sub
+                    dfs(i+1, sm - curr_num, -curr_num, pattern + "-" + str(curr_num))
+
+                    # Multiplication
+                    dfs(i+1, sm - prev_num + prev_num * curr_num, prev_num * curr_num, pattern + "*" + str(curr_num))
+
+                if str(curr_num) == "0": break
+
+        dfs(0, 0, 0, "")
+        return res
+
 
 
 
