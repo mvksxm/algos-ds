@@ -10,8 +10,8 @@ import heapq
 
 
 # Dijkstra algorithm.
-# TC -> O(e * log(k * e))
-# SC -> O(n × k + e)
+# TC -> O(n * k * log(n * k))
+# SC -> O(n * k + e); on each node -> n at max I can stop for k times. e -> creation of the adjacency list
 
 class Solution:
 
