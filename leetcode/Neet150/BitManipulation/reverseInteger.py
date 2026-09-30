@@ -1,3 +1,8 @@
+
+# TC -> O(log(k))
+# SC -> O(1)
+# Approach: Division, Simulation
+
 class Solution:
     def reverse(self, x: int) -> int:
         res = 0
